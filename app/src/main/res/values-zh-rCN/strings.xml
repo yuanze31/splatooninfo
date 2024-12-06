@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">[zh]Splatoon Info</string>
+    <string name="title_schedule">日程</string>
+    <string name="title_salmonrun">鲑鱼跑</string>
+    <string name="title_challenges">活动比赛</string>
+    <string name="title_gear">装备</string>
+    <string name="title_splatfests">祭典</string>
+</resources>

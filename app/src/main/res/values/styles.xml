@@ -1,0 +1,26 @@
+<resources>
+
+    <style name="splatoon_cn" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/dfp_gbzy7</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/splatoon_font_white</item>
+    </style>
+
+    <style name="splatoon1" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/splatoon1</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/splatoon_font_white</item>
+    </style>
+
+    <style name="splatoon2" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/splatoon2</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/splatoon_font_white</item>
+    </style>
+
+    <style name="AppTheme.FullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="colorControlHighlight">@android:color/transparent</item>
+    </style>
+</resources>

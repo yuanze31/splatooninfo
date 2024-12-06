@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_schedule">
+
+    <fragment
+        android:id="@+id/navigation_schedule"
+        android:name="com.yuanze31.splatooninfo.ui.schedule.ScheduleFragment"
+        android:label="@string/title_schedule"
+        tools:layout="@layout/fragment_schedule" />
+
+    <fragment
+        android:id="@+id/navigation_salmonrun"
+        android:name="com.yuanze31.splatooninfo.ui.salmonrun.SalmonrunFragment"
+        android:label="@string/title_salmonrun"
+        tools:layout="@layout/fragment_salmonrun" />
+
+    <fragment
+        android:id="@+id/navigation_challenges"
+        android:name="com.yuanze31.splatooninfo.ui.challenges.ChallengesFragment"
+        android:label="@string/title_challenges"
+        tools:layout="@layout/fragment_challenges" />
+
+    <fragment
+        android:id="@+id/navigation_gear"
+        android:name="com.yuanze31.splatooninfo.ui.gear.GearFragment"
+        android:label="@string/title_gear"
+        tools:layout="@layout/fragment_challenges" />
+
+    <fragment
+        android:id="@+id/navigation_splatfests"
+        android:name="com.yuanze31.splatooninfo.ui.splatfests.SplatfestsFragment"
+        android:label="@string/title_gear"
+        tools:layout="@layout/fragment_splatfests" />
+</navigation>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Splatoon Info</string>
+    <string name="title_schedule">Schedule</string>
+    <string name="title_salmonrun">Salmonrun</string>
+    <string name="title_challenges">Challenges</string>
+    <string name="title_gear">Gear</string>
+    <string name="title_splatfests">Splatfests</string>
+</resources>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_schedule"
+        android:icon="@drawable/ic_schedule"
+        android:title="@string/title_schedule" />
+
+    <item
+        android:id="@+id/navigation_salmonrun"
+        android:icon="@drawable/ic_salmonrun"
+        android:title="@string/title_salmonrun" />
+
+    <item
+        android:id="@+id/navigation_challenges"
+        android:icon="@drawable/ic_challenges"
+        android:title="@string/title_challenges" />
+
+    <item
+        android:id="@+id/navigation_gear"
+        android:icon="@drawable/ic_gear"
+        android:title="@string/title_gear" />
+
+    <item
+        android:id="@+id/navigation_splatfests"
+        android:icon="@drawable/ic_splatfests"
+        android:title="@string/title_splatfests" />
+
+</menu>
