@@ -12,7 +12,7 @@ import com.yuanze31.splatooninfo.ui.schedule.ScheduleViewModel;
 import com.yuanze31.splatooninfo.ui.splatfests.SplatfestsViewModel;
 import com.yuanze31.splatooninfo.utils.WebCacheConfig;
 
-public class WebImgViewModelFactory extends ViewModelProvider.AndroidViewModelFactory {
+public class WebImgViewModelFactory extends ViewModelProvider.NewInstanceFactory {
     
     private final Context applicationContext;
     
