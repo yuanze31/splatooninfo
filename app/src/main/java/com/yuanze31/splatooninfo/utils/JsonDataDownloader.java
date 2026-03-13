@@ -24,7 +24,6 @@ public class JsonDataDownloader {
         long lastFetchTime = getLastFetchTime(context);
         long currentTime = System.currentTimeMillis();
 
-        // 如果没有跨越整点或超过 1 小时，则跳过下载
         if (!isNextHour(lastFetchTime, currentTime)) {
             callback.onDownloadCompleted();
             return;
@@ -46,10 +45,14 @@ public class JsonDataDownloader {
                     if (response.isSuccessful() && response.body() != null) {
                         String jsonResponse = response.body().string();
                         String fileName = extractFileName(url);
-                        saveJsonData(saveDirectory, jsonResponse, fileName);
+                        
+                        String cachePath = CachePathUtils.urlToCachePath(url, "data");
+                        File cacheFile = new File(CachePathUtils.getExternalCacheDir(context), 
+                                                 cachePath.substring(CachePathUtils.CACHE_DIR_NAME.length() + 1));
+                        saveJsonData(cacheFile, jsonResponse);
 
                         if (remainingFiles.decrementAndGet() == 0) {
-                            saveFetchTime(context); // 下载完成后记录最新的时间戳
+                            saveFetchTime(context);
                             callback.onDownloadCompleted();
                         }
                     } else {
@@ -60,12 +63,12 @@ public class JsonDataDownloader {
         }
     }
 
-    private void saveJsonData(File saveDirectory, String jsonData, String fileName) {
-        if (!saveDirectory.exists()) {
-            saveDirectory.mkdirs(); // 如果目录不存在，创建目录
+    private void saveJsonData(File file, String jsonData) {
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
         }
 
-        try (FileOutputStream fos = new FileOutputStream(new File(saveDirectory, fileName))) {
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(jsonData.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
@@ -79,20 +82,19 @@ public class JsonDataDownloader {
 
 
     private void saveFetchTime(Context context) {
-        File file = new File(context.getExternalFilesDir(null), TIMESTAMP_FILE);
+        File file = new File(CachePathUtils.getExternalCacheDir(context), TIMESTAMP_FILE);
         try (FileOutputStream fos = new FileOutputStream(file)) {
             String currentTime = String.valueOf(System.currentTimeMillis());
             fos.write(currentTime.getBytes());
-//            System.out.println("Saved fetch time: " + currentTime);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     private long getLastFetchTime(Context context) {
-        File file = new File(context.getExternalFilesDir(null), TIMESTAMP_FILE);
+        File file = new File(CachePathUtils.getExternalCacheDir(context), TIMESTAMP_FILE);
         if (!file.exists()) {
-            return 0; // 如果文件不存在，返回默认值
+            return 0;
         }
 
         try (FileInputStream fis = new FileInputStream(file)) {
@@ -101,7 +103,7 @@ public class JsonDataDownloader {
             return Long.parseLong(new String(buffer).trim());
         } catch (IOException | NumberFormatException e) {
             e.printStackTrace();
-            return 0; // 如果读取失败或解析错误，返回默认值
+            return 0;
         }
     }
 

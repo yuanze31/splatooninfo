@@ -24,6 +24,7 @@ import com.yuanze31.splatooninfo.ui.salmonrun.SalmonrunFragment;
 import com.yuanze31.splatooninfo.ui.schedule.ScheduleFragment;
 import com.yuanze31.splatooninfo.ui.splatfests.SplatfestsFragment;
 import com.yuanze31.splatooninfo.utils.JsonDataDownloader;
+import com.yuanze31.splatooninfo.utils.CachePathUtils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 比较版本号
         if (savedVersionCode != currentVersionCode) {
-            // 如果版本号发生变化，清除外部存储目录内容
-            clearFiles("web_img");
+            // 如果版本号发生变化，清除缓存目录内容
+            clearCache();
 
             // 更新 SharedPreferences 中的版本号
             prefs.edit()
@@ -167,8 +168,7 @@ public class MainActivity extends AppCompatActivity {
                                           "https://splatoon3.ink/data/gear.json",
                                           "https://splatoon3.ink/data/coop.json",
                                           "https://splatoon3.ink/data/festivals.json");
-        File saveDirectory = new File(this.getExternalFilesDir(null),
-                                      "web_img/splatoon3.ink/data/");
+        File saveDirectory = CachePathUtils.getExternalCacheDir(this);
         jsonDataDownloader.dlJsonFiles(this,
                                        saveDirectory,
                                        dlJsonURLS,
@@ -261,33 +261,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * 用于清理Android/data/<package_name>/files下的目录
-     * 最起码我这个程序在那个目录放的都不是什么重要东西
-     * 已经这样了，应该不会出现误删的问题吧
+     * 清理缓存目录
      */
-    private void clearFiles(String relativePath) {
-        // 获取 /Android/data/<packagename>/files 目录
-        File rootDir = getExternalFilesDir(null);
-
-        if (rootDir != null) {
-            // 拼接完整路径
-            File target = new File(rootDir,
-                                   relativePath);
-
-            // 检查目标是否存在
-            if (target.exists()) {
-                // 递归删除文件或目录
-                deleteRecursive(target);
-//            System.out.println("Deleted: " + target.getAbsolutePath());
-            } else {
-                System.out.println("File or directory does not exist: " + target.getAbsolutePath());
-            }
+    private void clearCache() {
+        File cacheDir = CachePathUtils.getExternalCacheDir(this);
+        
+        if (cacheDir != null && cacheDir.exists()) {
+            deleteRecursive(cacheDir);
         }
     }
 
     /**
      * 递归删除文件（夹）
-     * 只被clearFiles调用
      */
     private void deleteRecursive(File fileOrDirectory) {
         if (fileOrDirectory.isDirectory()) {
@@ -298,6 +283,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-        fileOrDirectory.delete(); // 删除文件或空目录
+        fileOrDirectory.delete();
     }
 }

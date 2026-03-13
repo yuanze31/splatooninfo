@@ -77,7 +77,7 @@ public class GearFragment extends Fragment implements Refreshable {
                 // 读取 assets 文件夹中的 JavaScript
                 try {
                     InputStream inputStream = getContext().getAssets()
-                                                          .open("customJavaScripts/splatoon3.ink.js");
+                                                          .open("scripts/splatoon3_ink/ui_optimization.js");
                     byte[] buffer = new byte[inputStream.available()];
                     inputStream.read(buffer);
                     inputStream.close();

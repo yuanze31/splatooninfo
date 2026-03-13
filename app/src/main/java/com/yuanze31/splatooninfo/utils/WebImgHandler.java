@@ -25,33 +25,30 @@ public class WebImgHandler {
     }
 
     public String getImagePath(Context context, String originalUrl) {
-//        System.out.println("！目标站点" + targetSites);
-//        System.out.println("！允许后缀" + allowedExtensions);
-//        System.out.println("！特殊文件" + specialFiles);
         if (isSpecialFile(originalUrl)) {
-            return handleSpecialFile(context,
-                                     originalUrl);
+            return handleSpecialFile(context, originalUrl);
         }
 
         if (!isTargetSite(originalUrl) || !isAllowedFileType(originalUrl)) {
             return originalUrl;
         }
 
-        String localPath = convertUrlToLocalPath(originalUrl);
-        File dataFile = new File(context.getExternalFilesDir(null),
-                                 "web_img/" + localPath);
-
-        if (isFileExistInAssets(context,
-                                "web_img/" + localPath)) {
-            return "file:///android_asset/web_img/" + localPath;
+        String fileType = CachePathUtils.getFileType(originalUrl);
+        
+        String assetPath = CachePathUtils.urlToAssetPath(originalUrl, fileType);
+        if (isFileExistInAssets(context, assetPath)) {
+            return "file:///android_asset/" + assetPath;
         }
+
+        String cachePath = CachePathUtils.urlToCachePath(originalUrl, fileType);
+        File dataFile = new File(CachePathUtils.getExternalCacheDir(context), 
+                                 cachePath.substring(CachePathUtils.CACHE_DIR_NAME.length() + 1));
 
         if (dataFile.exists()) {
             return "file://" + dataFile.getAbsolutePath();
         }
 
-        downloadAndSaveImage(originalUrl,
-                             dataFile);
+        downloadAndSaveImage(originalUrl, dataFile);
         return originalUrl;
     }
 
@@ -88,11 +85,11 @@ public class WebImgHandler {
     }
 
     private String handleSpecialFile(Context context, String url) {
-        String localPath = convertUrlToLocalPath(url);
-        File dataFile = new File(context.getExternalFilesDir(null),
-                                 "web_img/" + localPath);
+        String fileType = CachePathUtils.getFileType(url);
+        String cachePath = CachePathUtils.urlToCachePath(url, fileType);
+        File dataFile = new File(CachePathUtils.getExternalCacheDir(context), 
+                                 cachePath.substring(CachePathUtils.CACHE_DIR_NAME.length() + 1));
         if (dataFile.exists()) {
-//            System.out.println("特殊文件存在" + "file://" + dataFile.getAbsolutePath());
             return "file://" + dataFile.getAbsolutePath();
         }
         return url;
@@ -118,16 +115,8 @@ public class WebImgHandler {
         return false;
     }
 
-    private String convertUrlToLocalPath(String url) {
-        return url.replace("https://",
-                           "")
-                  .replace("http://",
-                           "");
-    }
-
     private String getFileExtension(String url) {
-        int dotIndex = url.lastIndexOf('.');
-        return (dotIndex != -1) ? url.substring(dotIndex + 1) : "";
+        return CachePathUtils.getFileExtension(url);
     }
 
     private void downloadAndSaveImage(String url, File file) {
