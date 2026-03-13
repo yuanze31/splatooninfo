@@ -25,6 +25,7 @@ import com.yuanze31.splatooninfo.ui.schedule.ScheduleFragment;
 import com.yuanze31.splatooninfo.ui.splatfests.SplatfestsFragment;
 import com.yuanze31.splatooninfo.utils.JsonDataDownloader;
 import com.yuanze31.splatooninfo.utils.CachePathUtils;
+import com.yuanze31.splatooninfo.utils.ExecutorServiceManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -258,6 +259,12 @@ public class MainActivity extends AppCompatActivity {
         if (fragment != null && fragment instanceof Refreshable) {
             ((Refreshable) fragment).onDataUpdated(); // 通知页面
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ExecutorServiceManager.getInstance(this).shutdown();
     }
 
     /**

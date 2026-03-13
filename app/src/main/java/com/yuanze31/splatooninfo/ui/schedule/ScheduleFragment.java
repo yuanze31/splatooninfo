@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.yuanze31.splatooninfo.Refreshable;
 import com.yuanze31.splatooninfo.databinding.FragmentScheduleBinding;
+import com.yuanze31.splatooninfo.ui.WebImgViewModelFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class ScheduleFragment extends Fragment implements Refreshable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        scheduleViewModel = new ViewModelProvider(this).get(ScheduleViewModel.class);
+        scheduleViewModel = new ViewModelProvider(this, new WebImgViewModelFactory(requireContext())).get(ScheduleViewModel.class);
         binding = FragmentScheduleBinding.inflate(inflater,
                                                   container,
                                                   false);

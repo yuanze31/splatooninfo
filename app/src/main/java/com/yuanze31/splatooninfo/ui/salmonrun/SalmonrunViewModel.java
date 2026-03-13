@@ -11,9 +11,8 @@ import java.util.Arrays;
 public class SalmonrunViewModel extends ViewModel {
     private final WebImgHandler webImgHandler;
 
-    public SalmonrunViewModel() {
-        webImgHandler = new WebImgHandler(Arrays.asList("example.com",
-                                                        "splatoon3.ink"),
+    public SalmonrunViewModel(Context context) {
+        webImgHandler = new WebImgHandler(context, Arrays.asList("splatoon3.ink"),
                                           Arrays.asList("jpg",
                                                         "jpeg",
                                                         "png",

@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.yuanze31.splatooninfo.Refreshable;
 import com.yuanze31.splatooninfo.databinding.FragmentSalmonrunBinding;
+import com.yuanze31.splatooninfo.ui.WebImgViewModelFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class SalmonrunFragment extends Fragment implements Refreshable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        salmonrunViewModel = new ViewModelProvider(this).get(SalmonrunViewModel.class);
+        salmonrunViewModel = new ViewModelProvider(this, new WebImgViewModelFactory(requireContext())).get(SalmonrunViewModel.class);
         binding = FragmentSalmonrunBinding.inflate(inflater,
                                                    container,
                                                    false);

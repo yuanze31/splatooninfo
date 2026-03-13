@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.yuanze31.splatooninfo.Refreshable;
 import com.yuanze31.splatooninfo.databinding.FragmentSplatfestsBinding;
+import com.yuanze31.splatooninfo.ui.WebImgViewModelFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class SplatfestsFragment extends Fragment implements Refreshable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        splatfestsViewModel = new ViewModelProvider(this).get(SplatfestsViewModel.class);
+        splatfestsViewModel = new ViewModelProvider(this, new WebImgViewModelFactory(requireContext())).get(SplatfestsViewModel.class);
         binding = FragmentSplatfestsBinding.inflate(inflater,
                                                     container,
                                                     false);

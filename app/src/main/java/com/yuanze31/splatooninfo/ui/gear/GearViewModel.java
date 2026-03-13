@@ -11,9 +11,8 @@ import java.util.Arrays;
 public class GearViewModel extends ViewModel {
     private final WebImgHandler webImgHandler;
 
-    public GearViewModel() {
-        webImgHandler = new WebImgHandler(Arrays.asList("example.com",
-                                                        "splatoon3.ink"),
+    public GearViewModel(Context context) {
+        webImgHandler = new WebImgHandler(context, Arrays.asList("splatoon3.ink"),
                                           Arrays.asList("jpg",
                                                         "jpeg",
                                                         "png",

@@ -11,9 +11,8 @@ import java.util.Arrays;
 public class SplatfestsViewModel extends ViewModel {
     private final WebImgHandler webImgHandler;
 
-    public SplatfestsViewModel() {
-        webImgHandler = new WebImgHandler(Arrays.asList("example.com",
-                                                        "splatoon3.ink"),
+    public SplatfestsViewModel(Context context) {
+        webImgHandler = new WebImgHandler(context, Arrays.asList("splatoon3.ink"),
                                           Arrays.asList("jpg",
                                                         "jpeg",
                                                         "png",

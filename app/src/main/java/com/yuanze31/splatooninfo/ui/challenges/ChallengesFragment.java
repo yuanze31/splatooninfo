@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.yuanze31.splatooninfo.Refreshable;
 import com.yuanze31.splatooninfo.databinding.FragmentChallengesBinding;
+import com.yuanze31.splatooninfo.ui.WebImgViewModelFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +30,7 @@ public class ChallengesFragment extends Fragment implements Refreshable {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // 初始化 ViewModel
-        challengesViewModel = new ViewModelProvider(this).get(ChallengesViewModel.class);
+        challengesViewModel = new ViewModelProvider(this, new WebImgViewModelFactory(requireContext())).get(ChallengesViewModel.class);
 
         // 初始化绑定
         binding = FragmentChallengesBinding.inflate(inflater,

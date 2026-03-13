@@ -3,7 +3,6 @@ package com.yuanze31.splatooninfo.ui.schedule;
 import android.content.Context;
 
 import androidx.lifecycle.ViewModel;
-
 import com.yuanze31.splatooninfo.utils.WebImgHandler;
 
 import java.util.Arrays;
@@ -11,9 +10,8 @@ import java.util.Arrays;
 public class ScheduleViewModel extends ViewModel {
     private final WebImgHandler webImgHandler;
 
-    public ScheduleViewModel() {
-        webImgHandler = new WebImgHandler(Arrays.asList("example.com",
-                                                        "splatoon3.ink"),
+    public ScheduleViewModel(Context context) {
+        webImgHandler = new WebImgHandler(context, Arrays.asList("splatoon3.ink"),
                                           Arrays.asList("jpg",
                                                         "jpeg",
                                                         "png",
@@ -27,7 +25,6 @@ public class ScheduleViewModel extends ViewModel {
     }
 
     public String getImagePath(Context context, String originalUrl) {
-        return webImgHandler.getImagePath(context,
-                                          originalUrl);
+        return webImgHandler.getImagePath(context, originalUrl);
     }
 }

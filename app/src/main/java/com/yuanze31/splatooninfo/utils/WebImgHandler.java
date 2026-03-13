@@ -2,26 +2,33 @@ package com.yuanze31.splatooninfo.utils;
 
 import android.content.Context;
 import android.content.res.AssetManager;
-import android.os.AsyncTask;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 public class WebImgHandler {
 
     private final List<String> targetSites;
     private final List<String> allowedExtensions;
     private final List<String> specialFiles;
+    private final ExecutorService executor;
+    private final Context context;
 
     private final boolean tempAllowAllSites = false;
     private final boolean tempAllowAllExtensions = false;
 
-    public WebImgHandler(List<String> targetSites, List<String> allowedExtensions, List<String> specialFiles) {
+    public WebImgHandler(Context context, List<String> targetSites, List<String> allowedExtensions, List<String> specialFiles) {
+        this.context = context.getApplicationContext();
         this.targetSites = targetSites;
         this.allowedExtensions = allowedExtensions;
         this.specialFiles = specialFiles;
+        this.executor = ExecutorServiceManager.getInstance(context).getDownloadExecutor();
     }
 
     public String getImagePath(Context context, String originalUrl) {
@@ -120,40 +127,27 @@ public class WebImgHandler {
     }
 
     private void downloadAndSaveImage(String url, File file) {
-        new DownloadImageTask(url,
-                              file).execute();
-    }
-
-    private static class DownloadImageTask extends AsyncTask<Void, Void, Void> {
-        private final String imageUrl;
-        private final File localFile;
-
-        public DownloadImageTask(String imageUrl, File localFile) {
-            this.imageUrl = imageUrl;
-            this.localFile = localFile;
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
+        executor.execute(() -> {
             try {
-                File parentDir = localFile.getParentFile();
+                File parentDir = file.getParentFile();
                 if (!parentDir.exists() && !parentDir.mkdirs()) {
-                    throw new IOException("Failed to create directory: " + parentDir.getAbsolutePath());
+                    Log.e("WebImgHandler", "Failed to create directory: " + parentDir.getAbsolutePath());
+                    return;
                 }
-                java.net.URL url = new java.net.URL(imageUrl);
-                try (java.io.InputStream input = url.openStream(); FileOutputStream output = new FileOutputStream(localFile)) {
-                    byte[] buffer = new byte[1024];
+                
+                URL imageUrl = new URL(url);
+                try (InputStream input = imageUrl.openStream(); 
+                     FileOutputStream output = new FileOutputStream(file)) {
+                    byte[] buffer = new byte[8192];
                     int len;
                     while ((len = input.read(buffer)) != -1) {
-                        output.write(buffer,
-                                     0,
-                                     len);
+                        output.write(buffer, 0, len);
                     }
+                    Log.d("WebImgHandler", "Downloaded: " + url + " to " + file.getAbsolutePath());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.e("WebImgHandler", "Failed to download image: " + url, e);
             }
-            return null;
-        }
+        });
     }
 }
