@@ -26,6 +26,7 @@ import com.yuanze31.splatooninfo.ui.splatfests.SplatfestsFragment;
 import com.yuanze31.splatooninfo.utils.JsonDataDownloader;
 import com.yuanze31.splatooninfo.utils.CachePathUtils;
 import com.yuanze31.splatooninfo.utils.ExecutorServiceManager;
+import com.yuanze31.splatooninfo.utils.WebCacheConfig;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -165,14 +166,10 @@ public class MainActivity extends AppCompatActivity {
          * 我知道这很不标准，但是就这样吧 */
         // 下载 JSON 文件
         JsonDataDownloader jsonDataDownloader = new JsonDataDownloader();
-        List<String> dlJsonURLS = List.of("https://splatoon3.ink/data/schedules.json",
-                                          "https://splatoon3.ink/data/gear.json",
-                                          "https://splatoon3.ink/data/coop.json",
-                                          "https://splatoon3.ink/data/festivals.json");
         File saveDirectory = CachePathUtils.getExternalCacheDir(this);
         jsonDataDownloader.dlJsonFiles(this,
                                        saveDirectory,
-                                       dlJsonURLS,
+                                       WebCacheConfig.URLs.JSON_DATA_URLS,
                                        new JsonDataDownloader.JsonDownloadCallback() {
                                            @Override
                                            public void onDownloadCompleted() {

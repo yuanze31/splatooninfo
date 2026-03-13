@@ -3,30 +3,22 @@ package com.yuanze31.splatooninfo.ui.salmonrun;
 import android.content.Context;
 
 import androidx.lifecycle.ViewModel;
-
 import com.yuanze31.splatooninfo.utils.WebImgHandler;
+import com.yuanze31.splatooninfo.utils.WebCacheConfig;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class SalmonrunViewModel extends ViewModel {
     private final WebImgHandler webImgHandler;
 
     public SalmonrunViewModel(Context context) {
-        webImgHandler = new WebImgHandler(context, Arrays.asList("splatoon3.ink"),
-                                          Arrays.asList("jpg",
-                                                        "jpeg",
-                                                        "png",
-                                                        "gif",
-                                                        "bmp",
-                                                        "woff2"),
-                                          Arrays.asList("splatoon3.ink/data/schedules.json",
-                                                        "splatoon3.ink/data/gear.json",
-                                                        "splatoon3.ink/data/coop.json",
-                                                        "splatoon3.ink/data/festivals.json"));
+        webImgHandler = new WebImgHandler(context, 
+                                          List.of(WebCacheConfig.DataSources.SPLATOON3_INK),
+                                          WebCacheConfig.FileTypes.ALLOWED_EXTENSIONS,
+                                          WebCacheConfig.SpecialFiles.JSON_DATA_FILES);
     }
 
     public String getImagePath(Context context, String originalUrl) {
-        return webImgHandler.getImagePath(context,
-                                          originalUrl);
+        return webImgHandler.getImagePath(context, originalUrl);
     }
 }

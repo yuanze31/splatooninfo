@@ -14,6 +14,7 @@ import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import com.yuanze31.splatooninfo.utils.WebCacheConfig;
 
 public class JsonDataDownloader {
 
@@ -109,18 +110,16 @@ public class JsonDataDownloader {
 
     private boolean isNextHour(long lastFetchTime, long currentTime) {
         if (lastFetchTime == 0) {
-            return true; // 如果没有记录时间，则需要重新获取
-        }
-
-        // 判断是否超过 1 小时
-        long oneHourMillis = 60 * 60 * 1000;
-        if ((currentTime - lastFetchTime) > oneHourMillis) {
             return true;
         }
 
-        // 判断是否跨越整点
-        long lastHour = (lastFetchTime / oneHourMillis) % 24; // 获取上次下载的小时数
-        long currentHour = (currentTime / oneHourMillis) % 24; // 获取当前的小时数
+        if ((currentTime - lastFetchTime) > WebCacheConfig.Cache.DATA_UPDATE_INTERVAL) {
+            return true;
+        }
+
+        long oneHourMillis = 60 * 60 * 1000;
+        long lastHour = (lastFetchTime / oneHourMillis) % 24;
+        long currentHour = (currentTime / oneHourMillis) % 24;
         return lastHour != currentHour;
     }
 
